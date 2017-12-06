@@ -1,7 +1,7 @@
 #pragma once
 
 inline long SKID(long SkId) {
-	return (0x155555 + SkId - 1398101 - 0b000101010101010101010101 + (DWORD)GetModuleHandle(0) - 05252525 - 0x1);
+	return (SkId - 0x400000 + (DWORD)GetModuleHandle(0));
 }
 
 namespace SkId {

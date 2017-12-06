@@ -12,8 +12,8 @@
 ## Roblox for making a exploitable game :/
 ## Eternal for RetCheck https://github.com/EternalV3/Retcheck
 ## AutisticBobby https://www.youtube.com/channel/UCTEpoHLBZ38Cz3kuRL_OTiQ
-<sub><sub> Josh and their slaves Gems and Cosmology </sub></sub>
+## DOGGO for "bypass/workaround for setting values on non-fe games"
+## tepig "rawrbypass"
+<sub><sub> Josh()</sub></sub>
 # TODO LIST:              
-- [x] **UI with named pipes**
-- [x] **Injector**
 - [ ] **Add comments to the source**

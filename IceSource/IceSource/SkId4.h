@@ -107,9 +107,60 @@ namespace Rlua {
 	typedef int(__cdecl *Lua_SkId)(RSkidState lst, int nargs, int nresults);
 	Lua_SkId SKID_SkId = (Lua_SkId)SkidCheck(SkIds);
 	typedef void(__cdecl *Lua_setSkId)(RSkidState lst, int index, const char *k);
-	Lua_setSkId SKID_setSkId = (Lua_setSkId)SkidCheck(setSkId);
+	Lua_setSkId SKID_setSkId2 = (Lua_setSkId)SkidCheck(setSkId);
 	typedef void(__cdecl *Lua_hOwMaNySkIdS)(RSkidState lst, double n);
 	Lua_hOwMaNySkIdS SKID_hOwMaNySkIdS = (Lua_hOwMaNySkIdS)SkidCheck(hOwMaNySkIdS);
 	typedef int*(__cdecl *SKIDLeVEL)();
 	SKIDLeVEL SKIDLeVeL = (SKIDLeVEL)SKIDLEVEL;
+	typedef int(__cdecl *lua_DOGGO)(RSkidState lst, int idx);
+	lua_DOGGO SKID_DOGGO = (lua_DOGGO)SkidCheck(DOGGO);
+
+	typedef int(__cdecl *Lua_pSkId)(RSkidState lst, int nargs, int nresults, int errfunc);
+	Lua_pSkId SKID_pSkId = (Lua_pSkId)SkidCheck(pSkId);
+}
+
+#define SKID_poop(L,n)            Rlua::SKID_SkIdtop(L, -(n)-1)
+
+void BRawrtepig() {
+	DWORD lpflOldProtect;
+	VirtualProtect((void*)miaujz, 5, PAGE_EXECUTE_READWRITE, &lpflOldProtect);
+	//Changes protection to PAGE_EXECUTE_READWRITE so that we can modify the instruction
+	memcpy((void*)miaujz, "\xEB", 1);
+	//Changes the instruction to an unconditional short jmp
+	VirtualProtect((void*)miaujz, 5, lpflOldProtect, &lpflOldProtect);
+	//Restores original protection
+}
+
+void RRawrtepig() {
+	DWORD lpflOldProtect;
+	VirtualProtect((void*)miaujz, 5, PAGE_EXECUTE_READWRITE, &lpflOldProtect);
+	//Changes protection to PAGE_EXECUTE_READWRITE so that we can modify the instruction
+	memcpy((void*)miaujz, "\x74", 1);
+	//Changes the instruction back to jz
+	VirtualProtect((void*)miaujz, 5, lpflOldProtect, &lpflOldProtect);
+	//Restores original protection
+}
+
+void SKID_bpSkId(RSkidState lst, int nargs, int nresults, int errfunc) {
+	BRawrtepig();
+	Rlua::SKID_pSkId(lst, nargs, nresults, errfunc);
+	RRawrtepig();
+}
+
+//bypass/workaround for setting values on non-fe games thanks to DOGGO from SpoonFeed Hub Discord
+void SKID_setSkId(int L, int idx, const char *k) {
+	using namespace Rlua;
+	SKID_SkIdvalue(L, idx);
+	if (SKID_DOGGO(L, -1)) {
+		SKID_getSkId(L, -1, "__newindex");
+		SKID_SkIdvalue(L, -3);
+		SKID_pushSkId(L, k);
+		SKID_SkIdvalue(L, -6);
+		SKID_bpSkId(L, 3, 0, 0);
+		SKID_poop(L, 3);
+	}
+	else {
+		SKID_poop(L, 1);
+		SKID_setSkId2(L, idx, k);
+	}
 }

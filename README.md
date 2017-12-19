@@ -11,9 +11,9 @@
 # rakion99 for updating and improving this :wink:(I made a Discord Server if you want to join or not [Discord help server](https://discord.gg/K2A2Xhv "Click to join"))
 ## Roblox for making a exploitable game :/
 ## Eternal for RetCheck https://github.com/EternalV3/Retcheck
-## AutisticBobby https://www.youtube.com/channel/UCTEpoHLBZ38Cz3kuRL_OTiQ
+## AutisticBobby https://www.youtube.com/c/AutisticBobby
 ## DOGGO for "bypass/workaround for setting values on non-fe games"
 ## tepig "rawrbypass"
-<sub><sub> Josh()</sub></sub>
+<sub> Josh()</sub>
 # TODO LIST:              
 - [ ] **Add comments to the source**

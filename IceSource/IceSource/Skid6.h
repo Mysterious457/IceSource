@@ -1,28 +1,28 @@
 #pragma once
 //getfield
-unsigned long getSkId = SKID(0x732da0);
+unsigned long getSkId = SKID(0x7307e0);
 //settop
-unsigned long SkIdtop = SKID(0x734ed0);
+unsigned long SkIdtop = SKID(0x7328d0);
 //pushstring
-unsigned long pushSkId = SKID(0x734150);
+unsigned long pushSkId = SKID(0x731b60);
 //pushvalue
-unsigned long SkIdvalue = SKID(0x734210);
+unsigned long SkIdvalue = SKID(0x731c20);
 //call
-unsigned long SkIds = SKID(0x732730);
+unsigned long SkIds = SKID(0x730180);
 //setfield
-unsigned long setSkId = SKID(0x734af0);
+unsigned long setSkId = SKID(0x7324f0);
 //pushnumber
-unsigned long hOwMaNySkIdS = SKID(0x7340c0);
+unsigned long hOwMaNySkIdS = SKID(0x731ad0);
 //contextlevel/identity
-unsigned long SKIDLEVEL = SKID(0x5a8180);
+unsigned long SKIDLEVEL = SKID(0x5a7260);
 //ScriptContextVFTable
-unsigned long SkIdTab = SKID(0x6bb00e);
+unsigned long SkIdTab = SKID(0x6b898e);
 //getmetatable
-unsigned long DOGGO = SKID(0x733090);
+unsigned long DOGGO = SKID(0x730ad0);
 //pcall
-unsigned long pSkId = SKID(0x733b80);
+unsigned long pSkId = SKID(0x7315a0);
 //rawrjz
-unsigned long miaujz = SKID(0x72c4c7);
+unsigned long miaujz = SKID(0x729f17);
 
 int Skidtest;
 int SkidState;
@@ -33,5 +33,5 @@ void SKIDD() {
 	DWORD SkIdT = *(DWORD*)(SkIdTab + 0x2);
 	Skidtest = SkId::ScanforSkid((char*)&SkIdT);
 	//luastate
-	SkidState = *(DWORD*)(Skidtest + skid) - (Skidtest + skid);
+	SkidState = Skidtest + skid - *(DWORD*)(Skidtest + skid);
 }

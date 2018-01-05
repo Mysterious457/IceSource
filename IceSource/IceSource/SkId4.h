@@ -121,30 +121,12 @@ namespace Rlua {
 
 #define SKID_poop(L,n)            Rlua::SKID_SkIdtop(L, -(n)-1)
 
-void BRawrtepig() {
-	DWORD lpflOldProtect;
-	VirtualProtect((void*)miaujz, 5, PAGE_EXECUTE_READWRITE, &lpflOldProtect);
-	//Changes protection to PAGE_EXECUTE_READWRITE so that we can modify the instruction
-	memcpy((void*)miaujz, "\xEB", 1);
-	//Changes the instruction to an unconditional short jmp
-	VirtualProtect((void*)miaujz, 5, lpflOldProtect, &lpflOldProtect);
-	//Restores original protection
-}
-
-void RRawrtepig() {
-	DWORD lpflOldProtect;
-	VirtualProtect((void*)miaujz, 5, PAGE_EXECUTE_READWRITE, &lpflOldProtect);
-	//Changes protection to PAGE_EXECUTE_READWRITE so that we can modify the instruction
-	memcpy((void*)miaujz, "\x74", 1);
-	//Changes the instruction back to jz
-	VirtualProtect((void*)miaujz, 5, lpflOldProtect, &lpflOldProtect);
-	//Restores original protection
-}
-
 void SKID_bpSkId(RSkidState lst, int nargs, int nresults, int errfunc) {
-	BRawrtepig();
+	//Bypass RawrCheck by tepig
+	WriteProcessMemory(GetCurrentProcess(), reinterpret_cast<void*>(miaujz), "\xEB", 1, 0);
 	Rlua::SKID_pSkId(lst, nargs, nresults, errfunc);
-	RRawrtepig();
+	//Restore RawrCheck by tepig
+	WriteProcessMemory(GetCurrentProcess(), reinterpret_cast<void*>(miaujz), "\x74", 1, 0);
 }
 
 //bypass/workaround for setting values on non-fe games thanks to DOGGO from SpoonFeed Hub Discord

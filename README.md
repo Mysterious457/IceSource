@@ -14,6 +14,6 @@
 ## AutisticBobby https://youtube.com/c/AutisticBobby
 ## DOGGO "bypass/workaround for setting values on non-fe games"
 ## tepig "rawrcheck bypass"
-<sub> Josh()</sub>
+<sub> ICE By: Josh() and Cosmology</sub>
 # TODO LIST:              
 - [ ] **Add comments to the source**

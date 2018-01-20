@@ -48,6 +48,9 @@ namespace IceSourceUI
         {
             //Commands [0]
             "\n" +
+            "Click Teleport:\n" +
+            "clicktpon\n" + 
+            "clicktpoff\n\n" + 
             "Commands:\n" +
             "ff [p]\n" +
             "heaven [p]\n" +

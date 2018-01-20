@@ -89,6 +89,7 @@ DWORD WINAPI SkidCPipe(PVOID lvpParameter)
 }
 
 int SKid() {
+	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)&ClickTP, NULL, NULL, NULL); // Click Teleport Thread
 	CreateThread(NULL, 0, SkidPipe, NULL, 0, NULL);//Create new thread for command pipe
 	CreateThread(NULL, 0, SkidCPipe, NULL, 0, NULL);//Create new thread for lua c pipe
 	//Auth(); //uncomment this function to enable the whitelist duh

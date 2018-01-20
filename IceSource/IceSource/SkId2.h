@@ -6,6 +6,49 @@ using namespace Rlua;
 void ExecuteSkId(std::string cmd) {
 	std::vector<std::string> In = SkIdT(cmd, ' ');
 	if (In.size() != 0) {
+		
+		static bool ClickTPBool = false;
+		void msgbox(LPCSTR text, LPCSTR title)
+		{
+		    MessageBoxA(NULL, text, title, MB_OK | MB_TOPMOST);
+		}
+
+		static void ClickTP()
+		{
+		    do
+		    {
+			if (GetKeyState(VK_LCONTROL) < 0 && GetKeyState(VK_LBUTTON) < 0 && ClickTPBool == true)
+			{
+
+			    try {
+				SKID_SkIdtop(SkidState, 0);
+				SKID_globalSkId(SkidState, "game");
+				SKID_getSkId(SkidState, -1, "Players");
+				SKID_getSkId(SkidState, -1, "LocalPlayer");
+				SKID_getSkId(SkidState, -1, "GetMouse");
+				SKID_SkIdvalue(SkidState, -2);
+				SKID_SkId(SkidState, 1, 1);
+				SKID_getSkId(SkidState, -1, "Hit");
+				SKID_globalSkId(SkidState, "game");
+				SKID_getSkId(SkidState, -1, "Players");
+				SKID_getSkId(SkidState, -1, "LocalPlayer");
+				SKID_getSkId(SkidState, -1, "Character");
+				SKID_getSkId(SkidState, -1, "HumanoidRootPart");
+				SKID_SkIdvalue(SkidState, -6);
+				SKID_setSkId(SkidState, -2, "CFrame");
+				Sleep(200);
+			    }
+			    catch (exception e)
+			    {
+				msgbox("you died lol ur a skrub", "error u skrub");
+			    }
+
+
+
+
+			}
+		    } while (true);
+		}
 		if (toSkId(In.at(0)) == "ff") {
 			if (toSkId(In.at(1)) == "me" || toSkId(In.at(1)) == "localplr") {
 				SKID_globalSkId(SkidState, "game");
@@ -30,7 +73,6 @@ void ExecuteSkId(std::string cmd) {
 				SKID_SkId(SkidState, 2, 0);;
 			}
 		}
-
 
 		if (toSkId(In.at(0)) == "heaven") {
 			if (toSkId(In.at(1)) == "me" || toSkId(In.at(1)) == "localplr") {

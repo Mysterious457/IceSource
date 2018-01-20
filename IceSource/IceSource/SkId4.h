@@ -5,9 +5,9 @@ typedef int(RSkidState);
 #define LUA_GLOBALSKID -10002
 #define SKID_globalSkId(l,g)			 Rlua::SKID_getSkId(l, LUA_GLOBALSKID, g)
 
-DWORD SkidCheck(DWORD skider)
+DWORD SkidCheck(DWORD addr)
 {
-	BYTE* tskider = (BYTE*)skider;
+	BYTE* tAddr = (BYTE*)addr;
 
 	/* Calcualte the size of the function
 	In theory this will run until it hits the next
@@ -16,31 +16,31 @@ DWORD SkidCheck(DWORD skider)
 	*/
 	do
 	{
-		tskider += 16;
-	} while (!(tskider[0] == 0x55 && tskider[1] == 0x8B && tskider[2] == 0xEC));
+		tAddr += 16;
+	} while (!(tAddr[0] == 0x55 && tAddr[1] == 0x8B && tAddr[2] == 0xEC));
 
-	DWORD SkidSz = tskider - (BYTE*)skider;
+	DWORD funcSz = tAddr - (BYTE*)addr;
 
 	/* Allocate memory for the new function */
-	PVOID nSkid = VirtualAlloc(NULL, SkidSz, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-	if (nSkid == NULL)
-		return skider;
+	PVOID nFunc = VirtualAlloc(NULL, funcSz, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	if (nFunc == NULL)
+		return addr;
 
 	/* Copy the function to the newly allocated memory */
-	memcpy(nSkid, (void*)skider, SkidSz);
+	memcpy(nFunc, (void*)addr, funcSz);
 
-	BYTE* poSkid = (BYTE*)nSkid;
-	BOOL isskid = false;
+	BYTE* pos = (BYTE*)nFunc;
+	BOOL valid = false;
 	do
 	{
 		/* Check for the return check with the sig:
 		72 ?? A1 ?? ?? ?? ?? 8B
 		If the sig matches replace the the jb with a jmp.
 		*/
-		if (poSkid[0] == 0x72 && poSkid[2] == 0xA1 && poSkid[7] == 0x8B) {
-			*(BYTE*)poSkid = 0xEB;
+		if (pos[0] == 0x72 && pos[2] == 0xA1 && pos[7] == 0x8B) {
+			*(BYTE*)pos = 0xEB;
 
-			DWORD cSkid = (DWORD)nSkid;
+			DWORD cByte = (DWORD)nFunc;
 			do
 			{
 				/* Check if the current byte is a call if it is,
@@ -63,36 +63,36 @@ DWORD SkidCheck(DWORD skider)
 				of the call, since it is possible to have the byte
 				E8 inside of it.
 				*/
-				if (*(BYTE*)cSkid == 0xE8)
+				if (*(BYTE*)cByte == 0xE8)
 				{
-					DWORD oSkidPos = skider + (cSkid - (DWORD)nSkid);
-					DWORD oSkidAddr = (oSkidPos + *(DWORD*)(oSkidPos + 1)) + 5;
+					DWORD oFuncPos = addr + (cByte - (DWORD)nFunc);
+					DWORD oFuncAddr = (oFuncPos + *(DWORD*)(oFuncPos + 1)) + 5;
 
-					if (oSkidAddr % 16 == 0)
+					if (oFuncAddr % 16 == 0)
 					{
-						DWORD relativeSkid = oSkidAddr - cSkid - 5;
-						*(DWORD*)(cSkid + 1) = relativeSkid;
+						DWORD relativeAddr = oFuncAddr - cByte - 5;
+						*(DWORD*)(cByte + 1) = relativeAddr;
 
-						cSkid += 4;
+						cByte += 4;
 					}
 				}
 
-				cSkid += 1;
-			} while (cSkid - (DWORD)nSkid < SkidSz);
+				cByte += 1;
+			} while (cByte - (DWORD)nFunc < funcSz);
 
-			isskid = true;
+			valid = true;
 		}
-		poSkid += 1;
-	} while ((DWORD)poSkid < (DWORD)nSkid + SkidSz);
+		pos += 1;
+	} while ((DWORD)pos < (DWORD)nFunc + funcSz);
 
 	/* This function has no return check, let's not waste memory */
-	if (!isskid)
+	if (!valid)
 	{
-		VirtualFree(nSkid, SkidSz, MEM_RELEASE);
-		return skider;
+		VirtualFree(nFunc, funcSz, MEM_RELEASE);
+		return addr;
 	}
 
-	return (DWORD)nSkid;
+	return (DWORD)nFunc;
 }
 
 namespace Rlua {
